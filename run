@@ -1,0 +1,29 @@
+#!/bin/bash
+set +x
+
+BASE_DIR=`cd "$(dirname "$0")"; pwd`
+source "$BASE_DIR"/config
+
+DISK=${DISK:-sda}
+
+PUBKEY_FILE=~/.ssh/id_rsa.pub
+if ! [ -r $PUBKEY_FILE ]
+then
+  echo "Please, use ssh-keygen to generate the file $PUBKEY_FILE"
+  exit 0
+fi
+
+PUBKEY=$(cat $PUBKEY_FILE)
+
+cd "$BASE_DIR"
+
+ssh-keygen -R $HOST_IP
+
+# copy your public key, so can ssh without a password later on
+ssh -tt -p $HOST_SSH_PORT root@$HOST_IP "rm -rf ~/.ssh; mkdir -m 700 ~/.ssh; echo $PUBKEY > ~/.ssh/authorized_keys; chmod 600 ~/.ssh/authorized_keys"
+
+# copy install scripts from ./root folder
+scp -P $HOST_SSH_PORT config root/* root@$HOST_IP:~/
+
+# run the install script remotely
+ssh -tt -p $HOST_SSH_PORT root@$HOST_IP "chmod +x ./{install,chroot}; ./install $DISK"

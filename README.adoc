@@ -1,0 +1,33 @@
+= Arch Linux installation
+
+:mirror-sync: https://github.com/paulojeronimo/archlinux-mirror-synchronizer
+
+Clone this repo (or fork it and clone from your own account):
+
+----
+git clone https://github.com/paulojeornimo/archlinux-installer
+----
+
+Boot Arch Linux (on a virtual machine for example). On its shell, type:
+
+----
+$ passwd
+$ systemctl start sshd
+$ ip a s
+----
+
+Edit the link:config[] file and adjust your enviroment settings:
+
+----
+$ vim config
+----
+
+If you configure your environment to use your own Arch Linux mirror (through {mirror-sync}[archlinux-mirror-synchronizer]) start the HTTP server ({mirror-sync}/blob/master/README.adoc[see how on README.adoc]).
+
+In your machine (outside Arch Linux shell), type:
+
+----
+$ ./run
+----
+
+Go have some coffee. But come back soon! The Arch Linux installation (depending on what mirror you are using) will be very fast.

@@ -1,0 +1,34 @@
+#!/bin/bash
+set +x
+set -e
+
+# Virtual Machine Provider. Options are "VirtualBox" and "VMWare"
+VM_PROVIDER=VMWare
+
+HOST_IP=192.168.1.74
+HOST_SSH_PORT=22
+
+# Using VirtualBox, in general, I prefer to estabilish a connection via NAT
+#   trhough a configured port forwarding
+if [ "$VM_PROVIDER" = "VirtualBox" ]
+then
+  HOST_IP=127.0.0.1
+  HOST_SSH_PORT=2222
+fi
+
+HOSTNAME=archlinux
+USERNAME=pj
+USERPASS=$USERNAME
+HOME_DIR=/home/$USERNAME
+SWAP_SIZE=2G
+
+# Arch Linux mirror URL (could be local - see archlinux-mirror-syncrhonizer project)
+ARCHLINUX_MIRROR_URL="http://ftp.rnl.tecnico.ulisboa.pt/pub/archlinux"
+ARCHLINUX_LOCAL_MIRROR=true
+if [ "$ARCHLINUX_LOCAL_MIRROR" ]
+then
+  case "$VM_PROVIDER" in
+    VMWare) ARCHLINUX_MIRROR_URL="http://192.168.1.72:8000" ;;
+    VirtualBox) ARCHLINUX_MIRROR_URL="http://10.0.2.2:8000" ;;
+  esac
+fi
