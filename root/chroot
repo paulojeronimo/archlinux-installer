@@ -3,7 +3,15 @@ set +x
 #set -e
 
 BASE_DIR=`cd "$(dirname "$0")"; pwd`
-source "$BASE_DIR"/config
+
+CONFIG=$BASE_DIR/config
+source "$CONFIG" 2> /dev/null || {
+  CONFIG=$CONFIG.sample
+  source "$CONFIG" 2> /dev/null || {
+    echo "File \"$CONFIG\" was not found!"
+    exit 1
+  }
+}
 
 # grub as a bootloader
 grub-install --target=i386-pc --recheck "$1"

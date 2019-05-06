@@ -1,14 +1,83 @@
 = Arch Linux installation
+Paulo Jerônimo <pj@paulojeronimo.com>; {localdatetime}
+:numbered:
+:icons: font
+:toc:
 
+:archlinux: https://archlinux.org
 :mirror-sync: https://github.com/paulojeronimo/archlinux-mirror-synchronizer
+:br-mirror: http://br.mirror.archlinux-br.org/iso/2019.03.01/
+:vmware-fusion: https://store.vmware.com/store?Action=DisplayProductDetailsPage&Env=BASE&Locale=pt_BR&SiteID=vmwbr&ThemeID=38316100&productID=5222152800&src=WWW_eBIZ_StoreHome_Featured_FusionPro_BR
+:virtualbox: https://www.virtualbox.org/
+
+== Introduction
+
+This project can be used to easily install {archlinux}[Arch Linux] in a virtual machine (VM).
+
+It was tested on a macOS environment to install Arch Linux on {vmware-fusion}[VMware Fusion] or {virtualbox}[VirtualBox].
+
+== Steps
+
+=== Download Arch Linux
+
+https://www.archlinux.org/download/[Download Arch Linux] ISO file.
+
+NOTE: The last installation made with this project uses {br-mirror}/archlinux-2019.03.01-x86_64.iso[archlinux-2019.03.01-x86_64.iso] ISO file.
+
+=== Create the VM
+
+Create your VM.
+
+=== Clone this repo
 
 Clone this repo (or fork it and clone from your own account):
 
 ----
-git clone https://github.com/paulojeornimo/archlinux-installer
+git clone https://github.com/paulojeronimo/archlinux-installer
 ----
 
-Boot Arch Linux (on a virtual machine for example). On its shell, type:
+Copy link:config.sample[] file to a file named `config` and adjust it as you want.
+
+----
+$ cp config.sample config
+----
+
+At VM shell, see what is your `VM_IP`:
+
+----
+$ ip a s
+----
+
+[NOTE]
+====
+
+In my macOS I use the following command:
+
+----
+$ ifconfig | grep -A2 vmnet
+vmnet1: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+	ether 00:50:56:c0:00:01
+	inet 192.168.252.1 netmask 0xffffff00 broadcast 192.168.252.255
+--
+vmnet8: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+	ether 00:50:56:c0:00:08
+	inet 172.16.155.1 netmask 0xffffff00 broadcast 172.16.155.255
+----
+====
+
+Use your favorite editor to adjust the `config` file with your own settings:
+
+----
+$ vim config
+----
+
+=== Optionally use your own Arch Linux mirror
+
+If you configure your environment to use your own Arch Linux mirror (through {mirror-sync}[archlinux-mirror-synchronizer] project) start the HTTP server ({mirror-sync}/blob/master/README.adoc[see how on its README.adoc]).
+
+=== Boot the VM
+
+Boot Arch Linux. On its shell, type:
 
 ----
 $ passwd
@@ -16,13 +85,7 @@ $ systemctl start sshd
 $ ip a s
 ----
 
-Edit the link:config[] file and adjust your enviroment settings:
-
-----
-$ vim config
-----
-
-If you configure your environment to use your own Arch Linux mirror (through {mirror-sync}[archlinux-mirror-synchronizer]) start the HTTP server ({mirror-sync}/blob/master/README.adoc[see how on README.adoc]).
+=== Run the installer
 
 In your machine (outside Arch Linux shell), type:
 
@@ -30,4 +93,6 @@ In your machine (outside Arch Linux shell), type:
 $ ./run
 ----
 
-Go have some coffee. But come back soon! The Arch Linux installation (depending on what mirror you are using) will be very fast.
+Go have some coffee.
+But come back soon!
+The Arch Linux installation (depending on what mirror you are using) will be very fast.

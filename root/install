@@ -3,7 +3,15 @@ set +x
 #set -e
 
 BASE_DIR=`cd "$(dirname "$0")"; pwd`
-source "$BASE_DIR"/config
+
+CONFIG=$BASE_DIR/config
+source "$CONFIG" 2> /dev/null || {
+  CONFIG=$CONFIG.sample
+  source "$CONFIG" 2> /dev/null || {
+    echo "File \"$CONFIG\" was not found!"
+    exit 1
+  }
+}
 
 DISK="/dev/$1"
 PARTITION="${DISK}1"
@@ -21,11 +29,11 @@ pacman -Syy
 # would recommend to use linux-lts kernel if you are running a server environment, otherwise just use "linux"
 pacstrap /mnt $(pacman -Sqg base | sed 's/^linux$/&-lts/') base-devel grub openssh sudo ntp wget vim net-tools lsof
 genfstab -p /mnt >> /mnt/etc/fstab
-cp ./{config,chroot} /mnt
+cp ./{config,config.sample,chroot} /mnt
 cp ~/.ssh/authorized_keys /mnt
 arch-chroot /mnt ./chroot "$DISK"
 
-rm /mnt/{config,chroot}
+rm /mnt/{config,config.sample,chroot}
 rm /mnt/authorized_keys
 umount -R /mnt
 
