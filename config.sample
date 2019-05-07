@@ -16,7 +16,7 @@ HOST_HTTP_PORT=8000
 # Virtual Machine (VM) Provider. Options are "VirtualBox" and "VMWare"
 # Using VirtualBox, in general, I prefer to estabilish a connection via NAT
 #   trhough a configured port forwarding
-VM_PROVIDER=VMWare
+VM_PROVIDER=VirtualBox
 if [ "$VM_PROVIDER" = "VirtualBox" ]
 then
   VM_IP=127.0.0.1

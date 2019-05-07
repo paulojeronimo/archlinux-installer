@@ -26,7 +26,7 @@ NOTE: The last installation made with this project uses {br-mirror}/archlinux-20
 
 === Create the VM
 
-Create your VM.
+Create your VM and https://medium.com/platform-engineer/port-forwarding-for-ssh-http-on-virtualbox-459277a888be[configure the port forwarding (VirtualBox example)].
 
 === Clone this repo
 
